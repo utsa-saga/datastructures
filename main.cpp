@@ -5,10 +5,6 @@ using namespace std;
 void insert_in_array(int* arr, int* size, int value);
 int search_in_array(int* arr, int size, int value);
 void delete_in_array(int* arr, int* size, int value);
-void insert_in_sorted_array(int* arr, int* size, int value);
-int search_in_sorted_array(int* arr, int low, int high, int value);
-void delete_in_sorted_array(int* arr, int* size, int value);
-void insertion_sort(int* arr, int size);
 void print_array(int* arr, int size);
 
 typedef struct Node { 
@@ -66,25 +62,6 @@ int main()
 	// Deleting an element in array at the given index
 	delete_in_array(arr, &size, 5);
 	
-	// Sort Array
-	insertion_sort(arr, size);
-
-	// Inserting an element in sorted array at the given index
-	insert_in_sorted_array(arr, &size, 5);
-
-	// Searching an element in sorted array by the value
-	if (search_in_sorted_array(arr, 0, size-1, 1) >= 0)
-	{
-		cout << "Found element 1 in the sorted array. " << endl;
-	}
-	else
-	{
-		cout << "Could not find the element 1 in the sorted array. " << endl;
-	}
-
-	// Deleting an element in sorted array at the given index
-	delete_in_sorted_array(arr, &size, 2);
-
 	// Print array
 	print_array(arr, size);
 
@@ -153,88 +130,6 @@ void delete_in_array(int* arr, int* size, int value) {
     (*size)--;
 }
 
-void insert_in_sorted_array(int* arr, int* size, int value) {
-    if ((*size) >= ARR_SIZE)
-    {
-		cout << "Error: array is full! " << endl;
-		return;
-    }
-    if ((*size) == 0)
-    {
-    	arr[0] = value;
-    }
-    else if (value <= arr[0])
-    {
-    	for (int i = 0; i < (*size); i++)
-    	{
-    		arr[i+1] = arr[i];
-    	}
-    	arr[0] = value;
-    }
-    else if (value > arr[(*size)-1])
-    {
-    	arr[(*size)] = value;
-    }
-    else
-    {
-    	int index;
-    	for (int i = 0; i < (*size)-1; i++)
-	    {
-	    	if ((arr[i] <= value) && (value < arr[i+1]))
-	    	{
-	    		index = i+1;
-	    		break;
-	    	}
-	    }
-	    for (int i = index; i < (*size); i++)
-	    {
-	    	arr[i+1] = arr[i];
-	    }
-	    arr[index] = value;
-    }
-    (*size)++;
-}
-
-int search_in_sorted_array(int* arr, int low, int high, int value) {
-    if (high < low) 
-        return -1; 
-    int mid = (low + high) / 2;
-    if (value == arr[mid]) 
-        return mid; 
-    if (value > arr[mid]) 
-        return search_in_sorted_array(arr, (mid + 1), high, value); 
-    return search_in_sorted_array(arr, low, (mid - 1), value); 
-}
-
-void delete_in_sorted_array(int* arr, int* size, int value) {
-    int index = search_in_sorted_array(arr, 0, (*size)-1, value);
-    if (index == -1)
-    {
-    	cout << "Could not find the element in the array. " << endl;
-    }
-    else
-    {
-    	for (int i = index; i < (*size)-1; i++)
-    	{
-    		arr[i] = arr[i+1];
-    	}
-    }
-    (*size)--;
-}
-
-void insertion_sort(int* arr, int size) {
-	int i, j, key;
-    for (i = 1; i < size; i++) {
-        key = arr[i];
-        j = i - 1;
-        while ((j >= 0) && (arr[j] > key)) {
-            arr[j+1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = key;
-    }
-}
-
 void print_array(int* arr, int size)
 {
 	for (int i = 0; i < size; i++)
@@ -274,6 +169,7 @@ void search_in_linkedlist(List* list, int value)
 		if (p->value == value)
 		{
 			cout << "Found the element in the array. " << endl;
+			return;
 		}
 		p = p->next;
 	}
